@@ -1,0 +1,11 @@
+
+  {
+    "name": "METL",
+    "driver": "com.thereisnogravity.Driver",
+    "url": "jdbc:metl://",
+    "fetchSize": "500",
+    "limit": "limit-inline",
+    "allowUpload": true
+  }
+
+
