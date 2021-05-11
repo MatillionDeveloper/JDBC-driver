@@ -1,7 +1,12 @@
 # JDBC-driver
 This is the [JDBC driver](https://documentation.matillion.com/docs/2732018) for [Matillion ETL](https://www.matillion.com/)
 
-## Installation
+## Installing the driver
+This driver will only work within a Matillion ETL instance.
+
+For instructions on building your own custom JDBC driver, please see the [JavaDocs](https://matilliondeveloper.github.io/JDBC-driver/)
+
+## Installing the driver into Matillion ETL
 Edit your /usr/share/emerald/WEB-INF/classes/jdbc-providers.properties file and add this JSON fragment
 
 ```
