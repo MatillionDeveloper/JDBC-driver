@@ -1,0 +1,54 @@
+<body>
+<p>The package is intended as the simple for a base query-only JDBC driver for Java 8.</p>
+<p>Only queries are supprted, and - much like a CSV file - the only datatype is VARCHAR.</p>
+<p>It uses Google Gson 2.6.2 internally to store data and metadata. Every dataset is represented internally as a JsonObject with the following attributes:</p>
+<ul>
+  <li>JsonObject "metadata"</li>
+  <ul>
+    <li>JsonArray "names" containing the column names as simple strings</li>
+  </ul>
+  <li>JsonArray "data"</li>
+  <ul>
+    <li>Data record 1 - JsonObject containing attributes named the same as the above column names</li>
+    <li>Data record 2 - ditto</li>
+    <li>...</li>
+  </ul>
+</ul>
+
+<p>To use the library:</p>
+<ul>
+  <li>Put <a href="https://github.com/MatillionDeveloper/JDBC-driver/blob/main/5.8/lib/JDBC-Stub.jar">JDBC-Stub.jar</a> in your CLASSPATH</li>
+  <li>Write a class which extends DatabaseMetaDataStub, especially to define what tables and columns are available</li>
+  <li>Write a class which extends ConnectionStub, especially in prepareStatementImpl() to define how the data is converted into a JsonBackedStatement</li>
+  <ul>
+    <li>Include a constructor which accepts a String URL and a Properties argument.</li>
+    <li>The getMetaData() method should return your extended DatabaseMetaDataStub.</li>
+    <li>Override prepareStatementImpl() to return a JsonBackedStatement object. You define the columns and the contents. You can use getBaseJson() to get the JSON object started.</li>
+    <li>If the query is a SELECT COUNT(*).. you can use the helper method getRowcountStatement() to easily return a JsonBackedStatement for the count.</li>
+  </ul>
+  <li>Write a class which implements java.sql.Driver. Decide your URL pattern. The connect() method should return your extended ConnectionStub class</li>
+  <ul>
+    <li>It's important that your connect() and acceptsURL() methods agree with each other. At runtime, the JVM DriverManager will probably call connect() for <i>every</i> registered JDBC driver. So your connect() method will probably get called with a variety of unsupported URLs. When that happens you must return null rather than throwing a SQLException.</li>
+  </ul>
+</ul>
+
+<p>To use the library in a <a href="https://www.matillion.com/products/etl-software/">Matillion ETL</a> Database Query component:</p>
+<ul>
+  <li>Package your code into a JAR file</li>
+  <li>Follow <a href="https://documentation.matillion.com/docs/2732018">this guide</a> to add a new JDBC driver</li>
+  <li>In the Admin / Manage Database Drivers menu, upload both your JAR file and this library's <a href="https://github.com/MatillionDeveloper/JDBC-driver/blob/main/5.8/lib/JDBC-Stub.jar">JDBC-Stub.jar</a></li>
+</ul>
+
+<p>The JSON fragment that you'll need for /usr/share/emerald/WEB-INF/classes/jdbc-providers.properties looks like this</p>
+<pre>
+  {
+    "name": "Your Driver's Name",
+    "driver": "your.package.YourDriver",
+    "url": "jdbc:yoururl://..",
+    "fetchSize": "500",
+    "limit": "limit-inline",
+    "allowUpload": true
+  },
+</pre>
+
+</body>
