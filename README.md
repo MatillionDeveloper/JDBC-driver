@@ -39,3 +39,7 @@ You will find various built-in data sources available, including
 * runningjob - showing a snapshot of all running jobs in all projects
 * joblaunchstats - gives you insight into any latency issues which are preventing your jobs from starting running immediately after they are launched (for example trying to run too many jobs at once, or trying to run the same named job twice in parallel). The statistics will cycle once per week, so you should aim to capture them to a more permanent table
 * instance - giving you basic metrics on your VM, such as CPU, network, timezone etc
+
+## Implementation Examples
+See under the examples/ directory.
+
